@@ -2,11 +2,12 @@ import { useCounter } from "../../hooks";
 import classes from "./counter.module.css";
 
 type CounterProps = {
+  /** The initial value of the counter, the default value is 0. */
   initialValue?: number;
 };
 
 /**
- * A count that can only be incremented by 1.
+ * A counter that can only be incremented by 1.
  */
 export function Counter({ initialValue = 0 }: CounterProps): JSX.Element {
   const [count, increment] = useCounter(initialValue);
@@ -26,3 +27,5 @@ export function Counter({ initialValue = 0 }: CounterProps): JSX.Element {
     </div>
   );
 }
+
+export default Counter;
