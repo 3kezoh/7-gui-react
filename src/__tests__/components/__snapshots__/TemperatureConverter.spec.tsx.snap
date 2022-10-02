@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TemperatureConverter should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="temperatureConverter"
+  >
+    <input
+      data-testid="celsius"
+      name="celsius"
+      type="number"
+      value="0"
+    />
+    <span>
+      Celsius =
+    </span>
+    <input
+      data-testid="fahrenheit"
+      name="fahrenheit"
+      type="number"
+      value="32"
+    />
+    <span>
+      Fahrenheit
+    </span>
+  </div>
+</DocumentFragment>
+`;
