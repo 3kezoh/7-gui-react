@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlightBooker should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flightBooker"
+    data-testid="flightBooker"
+  >
+    <select
+      data-testid="flight"
+    >
+      <option
+        data-testid="oneWayFlight"
+        value="one-way flight"
+      >
+        one-way flight
+      </option>
+      <option
+        data-testid="returnFlight"
+        value="return flight"
+      >
+        return flight
+      </option>
+    </select>
+    <input
+      data-testid="startDate"
+      name="startDate"
+      pattern="\\d{4}-\\d{2}-\\d{2}"
+      type="date"
+      value="1972-06-05"
+    />
+    <input
+      data-testid="returnDate"
+      disabled=""
+      name="returnDate"
+      pattern="\\d{4}-\\d{2}-\\d{2}"
+      type="date"
+      value="1972-06-05"
+    />
+    <button
+      data-testid="book"
+    >
+      book
+    </button>
+  </div>
+</DocumentFragment>
+`;

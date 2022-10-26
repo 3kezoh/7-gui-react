@@ -1,11 +1,11 @@
-import { Counter } from "./components";
-import { TemperatureConverter } from "./components/TemperatureConverter";
+import { Counter, TemperatureConverter, FlightBooker } from "./components";
 
 function App() {
   return (
     <div className="App">
       <Counter />
       <TemperatureConverter />
+      <FlightBooker />
     </div>
   );
 }

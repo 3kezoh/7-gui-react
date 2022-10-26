@@ -1,0 +1,12 @@
+.flightBooker {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid black;
+  max-width: fit-content;
+}
+
+.error {
+  background: red;
+}
