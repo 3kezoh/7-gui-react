@@ -60,7 +60,7 @@ describe("FlightBooker", () => {
       );
     });
 
-    it("should have the start date in red when it iss invalid", async () => {
+    it("should have the start date in red when it is invalid", async () => {
       const user = userEvent.setup({ delay: null });
 
       render(<FlightBooker />);
