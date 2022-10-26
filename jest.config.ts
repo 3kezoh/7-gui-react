@@ -3,7 +3,7 @@ export default {
   coverageReporters: ["html"],
   testEnvironment: "jsdom",
   preset: "ts-jest/presets/default-esm",
-  moduleNameMapper: {
-    "^.+\\.css$": "identity-obj-proxy",
+  transform: {
+    "^.+\\.css$": "jest-css-modules-transform",
   },
 };

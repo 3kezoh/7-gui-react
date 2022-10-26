@@ -3,9 +3,11 @@
 exports[`TemperatureConverter should match the snapshot 1`] = `
 <DocumentFragment>
   <div
+    class="temperatureConverter"
     data-testid="temperatureConverter"
   >
     <input
+      class="temperature"
       data-testid="celsius"
       name="celsius"
       type="number"
@@ -15,6 +17,7 @@ exports[`TemperatureConverter should match the snapshot 1`] = `
       Celsius =
     </span>
     <input
+      class="temperature"
       data-testid="fahrenheit"
       name="fahrenheit"
       type="number"
