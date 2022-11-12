@@ -53,6 +53,7 @@ function reducer(state: InitialState, { type, payload }: ACTIONTYPE) {
         ...(isNumeric(payload) && { celsius: toCelsius(+payload) }),
       };
 
+    /* c8 ignore next 2 */
     default:
       return state;
   }

@@ -49,6 +49,7 @@ function reducer(state: State, { type, payload }: ACTIONTYPE): State {
         returnDateAsString: payload,
       };
 
+    /* c8 ignore next 2 */
     default:
       return state;
   }
