@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`FlightBooker should match the snapshot 1`] = `
+exports[`FlightBooker > should match the snapshot 1`] = `
 <DocumentFragment>
   <div
     class="flightBooker"
@@ -25,7 +25,7 @@ exports[`FlightBooker should match the snapshot 1`] = `
     <input
       data-testid="startDate"
       name="startDate"
-      pattern="\\d{4}-\\d{2}-\\d{2}"
+      pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
       type="date"
       value="1972-06-05"
     />
@@ -33,7 +33,7 @@ exports[`FlightBooker should match the snapshot 1`] = `
       data-testid="returnDate"
       disabled=""
       name="returnDate"
-      pattern="\\d{4}-\\d{2}-\\d{2}"
+      pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
       type="date"
       value="1972-06-05"
     />

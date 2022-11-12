@@ -4,13 +4,13 @@ import userEvent from "@testing-library/user-event";
 import { FlightBooker } from "../../components";
 
 beforeEach(() => {
-  jest.useFakeTimers({ now: new Date("1972-06-05") });
+  vi.useFakeTimers({ now: new Date("1972-06-05") });
 });
 
 afterEach(() => {
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
-  jest.restoreAllMocks();
+  vi.runOnlyPendingTimers();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
 });
 
 describe("FlightBooker", () => {
@@ -45,7 +45,9 @@ describe("FlightBooker", () => {
     });
 
     it("should informs the user that the booking is successful", async () => {
-      const alertSpy = jest.spyOn(window, "alert").mockImplementation();
+      const alertSpy = vi.spyOn(window, "alert");
+
+      alertSpy.mockImplementation(() => null);
 
       const user = userEvent.setup({ delay: null });
 
@@ -123,7 +125,9 @@ describe("FlightBooker", () => {
     });
 
     it("should informs the user the booking is successful", async () => {
-      const alertSpy = jest.spyOn(window, "alert").mockImplementation();
+      const alertSpy = vi.spyOn(window, "alert");
+
+      alertSpy.mockImplementation(() => null);
 
       const user = userEvent.setup({ delay: null });
 
