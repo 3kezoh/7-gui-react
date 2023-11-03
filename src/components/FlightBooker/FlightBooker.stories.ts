@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import TemperatureConverter from "./TemperatureConverter";
+import FlightBooker from "./FlightBooker";
 
 const meta = {
-  component: TemperatureConverter,
-} satisfies Meta<typeof TemperatureConverter>;
+  component: FlightBooker,
+} satisfies Meta<typeof FlightBooker>;
 
 type Story = StoryObj<typeof meta>;
 
