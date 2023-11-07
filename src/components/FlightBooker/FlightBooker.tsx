@@ -1,70 +1,16 @@
-import { useReducer } from "react";
+import { isFlight, isFlightDate, useFlightBooker } from "../../hooks";
 import classes from "./flightBooker.module.css";
 
-type Flight = "one-way flight" | "return flight";
-
-type FlightDate = "startDate" | "returnDate";
-
-type ACTIONTYPE =
-  | { type: FlightDate; payload: string }
-  | { type: "flight"; payload: Flight };
-
-type State = {
-  flight: Flight;
-  startDateAsString: string;
-  returnDateAsString: string;
-};
-
-/**
- * Determines whether `str` is a {@link Flight}.
- */
-function isFlight(str: string): str is Flight {
-  return ["one-way flight", "return flight"].includes(str);
-}
-
-/**
- * Determines whether `str` is a {@link FlightDate}
- */
-function isFlightDate(str: string): str is FlightDate {
-  return ["startDate", "returnDate"].includes(str);
-}
-
-function reducer(state: State, { type, payload }: ACTIONTYPE): State {
-  switch (type) {
-    case "flight":
-      return {
-        ...state,
-        flight: payload,
-      };
-
-    case "startDate":
-      return {
-        ...state,
-        startDateAsString: payload,
-      };
-
-    case "returnDate":
-      return {
-        ...state,
-        returnDateAsString: payload,
-      };
-
-    /* c8 ignore next 2 */
-    default:
-      return state;
-  }
-}
-
 export function FlightBooker() {
-  const nowAsString = new Date().toISOString().slice(0, 10);
-
-  const [state, dispatch] = useReducer(reducer, {
-    flight: "one-way flight",
-    startDateAsString: nowAsString,
-    returnDateAsString: nowAsString,
-  });
-
+  const [state, { setFlight, setFlightDate }] = useFlightBooker();
   const { flight, startDateAsString, returnDateAsString } = state;
+  const startDate = new Date(startDateAsString);
+  const returnDate = new Date(returnDateAsString);
+  const startDateTime = startDate.getTime();
+  const returnDateTime = returnDate.getTime();
+  const isStartDateValid = !Number.isNaN(startDateTime);
+  const isReturnDateValid = !Number.isNaN(returnDateTime);
+  const isOneWayFlight = flight === "one-way flight";
 
   /**
    * Dispatches the action to change the flight.
@@ -73,7 +19,7 @@ export function FlightBooker() {
     const { value } = target;
 
     if (isFlight(value)) {
-      dispatch({ type: "flight", payload: value });
+      setFlight(value);
     }
   }
 
@@ -84,17 +30,9 @@ export function FlightBooker() {
     const { value, name } = target;
 
     if (isFlightDate(name)) {
-      dispatch({ type: name, payload: value });
+      setFlightDate(name, value);
     }
   }
-
-  const startDate = new Date(startDateAsString);
-  const returnDate = new Date(returnDateAsString);
-  const startDateTime = startDate.getTime();
-  const returnDateTime = returnDate.getTime();
-  const isStartDateValid = !Number.isNaN(startDateTime);
-  const isReturnDateValid = !Number.isNaN(returnDateTime);
-  const isOneWayFlight = flight === "one-way flight";
 
   /**
    * Informs the user of his selection.
@@ -114,14 +52,17 @@ export function FlightBooker() {
     );
   }
 
-  function isButtonDisabled() {
+  /**
+   * Returns whether the flight is bookable
+   */
+  function isBookable() {
     if (isOneWayFlight) {
-      return !isStartDateValid;
+      return isStartDateValid;
     }
 
-    const isBookable = returnDateTime > startDateTime;
+    const isReturnAfterStart = returnDateTime > startDateTime;
 
-    return !isStartDateValid || !isReturnDateValid || !isBookable;
+    return isStartDateValid && isReturnDateValid && isReturnAfterStart;
   }
 
   return (
@@ -153,11 +94,7 @@ export function FlightBooker() {
         pattern="\d{4}-\d{2}-\d{2}"
         data-testid="returnDate"
       />
-      <button
-        onClick={onBookClick}
-        disabled={isButtonDisabled()}
-        data-testid="book"
-      >
+      <button onClick={onBookClick} disabled={!isBookable()} data-testid="book">
         book
       </button>
     </div>

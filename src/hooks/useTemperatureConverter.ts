@@ -5,7 +5,7 @@ type Temperature = "celsius" | "fahrenheit";
 
 type ACTIONTYPE = { type: Temperature; payload: string };
 
-type InitialState = {
+type State = {
   celsius: number | string;
   fahrenheit: number | string;
 };
@@ -13,7 +13,7 @@ type InitialState = {
 const initialState = {
   celsius: 0,
   fahrenheit: 32,
-} satisfies InitialState;
+} satisfies State;
 
 /**
  * Determines whether `str` is a `Temperature`.
@@ -37,7 +37,7 @@ function getInitialState({ celsius, fahrenheit }: UseTemperatureParams) {
   return initialState;
 }
 
-function reducer(state: InitialState, { type, payload }: ACTIONTYPE) {
+function reducer(state: State, { type, payload }: ACTIONTYPE) {
   switch (type) {
     case "celsius":
       return {
