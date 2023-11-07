@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import classes from "./temperatureConverter.module.css";
 import {
   useTemperature,
@@ -14,16 +13,13 @@ type TemperatureConverterProps = UseTemperatureParams;
 export function TemperatureConverter(props: TemperatureConverterProps) {
   const [{ celsius, fahrenheit }, setTemperature] = useTemperature(props);
 
-  const onChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target;
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
 
-      if (isTemperature(name)) {
-        return setTemperature(value, name);
-      }
-    },
-    [setTemperature]
-  );
+    if (isTemperature(name)) {
+      return setTemperature(value, name);
+    }
+  }
 
   return (
     <div

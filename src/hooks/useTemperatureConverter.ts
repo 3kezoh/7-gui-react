@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from "react";
+import { useReducer } from "react";
 import { isNumeric, toCelsius, toFahrenheit } from "../utils";
 
 type Temperature = "celsius" | "fahrenheit";
@@ -13,7 +13,7 @@ type InitialState = {
 const initialState = {
   celsius: 0,
   fahrenheit: 32,
-};
+} satisfies InitialState;
 
 /**
  * Determines whether `str` is a `Temperature`.
@@ -75,18 +75,15 @@ export type UseTemperatureParams =
 
 export function useTemperature(params: UseTemperatureParams) {
   const initialState = getInitialState(params);
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   /**
    * Updates the temperature in the specified `unit`, the other unit(s) will be
    * automatically converted if possible.
    */
-  const setTemperature = useCallback(
-    (value: string, unit: Temperature) =>
-      dispatch({ type: unit, payload: value }),
-    []
-  );
+  function setTemperature(value: string, unit: Temperature) {
+    dispatch({ type: unit, payload: value });
+  }
 
   return [state, setTemperature] as const;
 }
