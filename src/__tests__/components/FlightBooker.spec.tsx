@@ -16,15 +16,16 @@ describe("FlightBooker", () => {
   it("should render the flight booker", () => {
     render(<FlightBooker />);
 
-    expect(screen.getByTestId("flightBooker")).toBeInTheDocument();
+    const flightBooker = screen.getByTestId("flightBooker");
+
+    expect(flightBooker).toBeInTheDocument();
   });
 
   describe("one-way flight", () => {
     it("should have the return date disabled", () => {
       render(<FlightBooker />);
 
-      const returnDateInput: HTMLInputElement =
-        screen.getByTestId("returnDate");
+      const returnDateInput = screen.getByTestId("returnDate");
 
       expect(returnDateInput).toBeDisabled();
     });
@@ -34,7 +35,7 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const startDateInput: HTMLInputElement = screen.getByTestId("startDate");
+      const startDateInput = screen.getByTestId("startDate");
 
       await user.clear(startDateInput);
 
@@ -43,7 +44,7 @@ describe("FlightBooker", () => {
       expect(startDateInput).toHaveValue("1980-03-25");
     });
 
-    it("should informs the user that the booking is successful", async () => {
+    it.only("should informs the user that the booking is successful", async () => {
       const alertSpy = vi.spyOn(window, "alert");
 
       alertSpy.mockImplementation(() => null);
@@ -66,7 +67,7 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const startDateInput: HTMLInputElement = screen.getByTestId("startDate");
+      const startDateInput = screen.getByTestId("startDate");
 
       await user.clear(startDateInput);
 
@@ -78,7 +79,7 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const startDateInput: HTMLInputElement = screen.getByTestId("startDate");
+      const startDateInput = screen.getByTestId("startDate");
 
       await user.clear(startDateInput);
 

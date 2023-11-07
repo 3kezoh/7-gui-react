@@ -6,10 +6,12 @@ describe("TemperatureConverter", () => {
   it("should render the temperature converter", () => {
     render(<TemperatureConverter />);
 
-    expect(screen.getByTestId("temperatureConverter")).toBeInTheDocument();
+    const temperatureConverter = screen.getByTestId("temperatureConverter");
+
+    expect(temperatureConverter).toBeInTheDocument();
   });
 
-  it("should render 100 Celsius 212 Fahrenheit", () => {
+  it("should render 100 Celsius and 212 Fahrenheit", () => {
     render(<TemperatureConverter celsius={100} />);
 
     const celsiusInput = screen.getByTestId("celsius");

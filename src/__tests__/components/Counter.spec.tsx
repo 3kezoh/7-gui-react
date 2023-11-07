@@ -6,7 +6,9 @@ describe("Counter", () => {
   it("should render the counter", () => {
     render(<Counter />);
 
-    expect(screen.getByTestId("counter")).toBeInTheDocument();
+    const counter = screen.getByTestId("counter");
+
+    expect(counter).toBeInTheDocument();
   });
 
   it("should render the counter with the correct initial value", () => {
