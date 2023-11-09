@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Timer > should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="timer"
+    data-testid="timer"
+  >
+    <div
+      class="elapsedTime"
+    >
+      <label
+        for="time"
+      >
+        Elapsed Time:
+      </label>
+      <progress
+        id="time"
+        max="1000"
+        value="0"
+      />
+    </div>
+    <div>
+      0s
+    </div>
+    <div
+      class="duration"
+    >
+      <label
+        for="duration"
+      >
+        Duration:
+      </label>
+      <input
+        id="duration"
+        max="10000"
+        min="0"
+        name="duration"
+        step="100"
+        type="range"
+        value="1000"
+      />
+    </div>
+    <button
+      name="reset"
+      type="button"
+    >
+      Reset
+    </button>
+  </div>
+</DocumentFragment>
+`;
