@@ -32,18 +32,18 @@ export function TemperatureConverter(props: TemperatureConverterProps) {
         name="celsius"
         value={celsius.toString()}
         onChange={onChange}
-        data-testid="celsius"
+        id="celsius"
       />
-      <span>Celsius =</span>
+      <label htmlFor="celsius">Celsius =</label>
       <input
         className={classes.temperature}
         type="number"
         name="fahrenheit"
         value={fahrenheit.toString()}
         onChange={onChange}
-        data-testid="fahrenheit"
+        id="fahrenheit"
       />
-      <span>Fahrenheit</span>
+      <label htmlFor="fahrenheit">Fahrenheit</label>
     </div>
   );
 }

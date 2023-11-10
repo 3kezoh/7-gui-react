@@ -14,14 +14,8 @@ export function Counter({ initialValue = 0 }: CounterProps): JSX.Element {
 
   return (
     <div className={classes.counter} data-testid="counter">
-      <div className={classes.count} data-testid="count">
-        {count}
-      </div>
-      <button
-        className={classes.button}
-        onClick={increment}
-        data-testid="increment"
-      >
+      <div className={classes.count}>{count}</div>
+      <button className={classes.button} onClick={increment} type="button">
         Count
       </button>
     </div>

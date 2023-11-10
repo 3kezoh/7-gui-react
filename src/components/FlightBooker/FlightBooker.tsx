@@ -67,13 +67,9 @@ export function FlightBooker() {
 
   return (
     <div className={classes.flightBooker} data-testid="flightBooker">
-      <select value={flight} onChange={onFlightChange} data-testid="flight">
-        <option value="one-way flight" data-testid="oneWayFlight">
-          one-way flight
-        </option>
-        <option value="return flight" data-testid="returnFlight">
-          return flight
-        </option>
+      <select value={flight} onChange={onFlightChange}>
+        <option value="one-way flight">one-way flight</option>
+        <option value="return flight">return flight</option>
       </select>
       <input
         className={isStartDateValid ? undefined : classes.error}
@@ -94,7 +90,7 @@ export function FlightBooker() {
         pattern="\d{4}-\d{2}-\d{2}"
         data-testid="returnDate"
       />
-      <button onClick={onBookClick} disabled={!isBookable()} data-testid="book">
+      <button onClick={onBookClick} disabled={!isBookable()}>
         book
       </button>
     </div>

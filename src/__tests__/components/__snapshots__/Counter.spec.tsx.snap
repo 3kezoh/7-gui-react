@@ -8,13 +8,12 @@ exports[`Counter > should match the snapshot 1`] = `
   >
     <div
       class="count"
-      data-testid="count"
     >
       0
     </div>
     <button
       class="button"
-      data-testid="increment"
+      type="button"
     >
       Count
     </button>

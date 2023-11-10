@@ -13,7 +13,7 @@ afterEach(() => {
 });
 
 describe("FlightBooker", () => {
-  it("should render the flight booker", () => {
+  it("should be in the document", () => {
     render(<FlightBooker />);
 
     const flightBooker = screen.getByTestId("flightBooker");
@@ -44,7 +44,7 @@ describe("FlightBooker", () => {
       expect(startDateInput).toHaveValue("1980-03-25");
     });
 
-    it.only("should informs the user that the booking is successful", async () => {
+    it("should informs the user that the booking is successful", async () => {
       const alertSpy = vi.spyOn(window, "alert");
 
       alertSpy.mockImplementation(() => null);
@@ -53,7 +53,7 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const bookButton = screen.getByTestId("book");
+      const bookButton = screen.getByRole("button", { name: /book/i });
 
       await user.click(bookButton);
 
@@ -74,7 +74,7 @@ describe("FlightBooker", () => {
       expect(startDateInput).toHaveClass("error");
     });
 
-    it("should disabled the book button when the start date is invalid", async () => {
+    it("should disable the book button when the start date is invalid", async () => {
       const user = userEvent.setup({ delay: null });
 
       render(<FlightBooker />);
@@ -83,7 +83,7 @@ describe("FlightBooker", () => {
 
       await user.clear(startDateInput);
 
-      const bookButton = screen.getByTestId("book");
+      const bookButton = screen.getByRole("button", { name: /book/i });
 
       expect(bookButton).toBeDisabled();
     });
@@ -95,9 +95,11 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
@@ -109,9 +111,11 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
@@ -133,9 +137,11 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
@@ -145,7 +151,7 @@ describe("FlightBooker", () => {
 
       await user.type(returnDateInput, "1980-03-25");
 
-      const bookButton = screen.getByTestId("book");
+      const bookButton = screen.getByRole("button", { name: /book/i });
 
       await user.click(bookButton);
 
@@ -159,9 +165,11 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
@@ -177,9 +185,11 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
@@ -187,7 +197,7 @@ describe("FlightBooker", () => {
 
       await user.clear(returnDateInput);
 
-      const bookButton = screen.getByTestId("book");
+      const bookButton = screen.getByRole("button", { name: /book/i });
 
       expect(bookButton).toBeDisabled();
     });
@@ -197,13 +207,15 @@ describe("FlightBooker", () => {
 
       render(<FlightBooker />);
 
-      const flightSelect = screen.getByTestId("flight");
+      const flightSelect = screen.getByRole("combobox");
 
-      const returnFlightOption = screen.getByTestId("returnFlight");
+      const returnFlightOption = screen.getByRole("option", {
+        name: /return flight/i,
+      });
 
       await user.selectOptions(flightSelect, returnFlightOption);
 
-      const bookButton = screen.getByTestId("book");
+      const bookButton = screen.getByRole("button", { name: /book/i });
 
       expect(bookButton).toBeDisabled();
     });

@@ -61,7 +61,7 @@ export function Timer({ step = 100, min = 0, max = 10_000 }: TimerProps) {
           max={max}
         />
       </div>
-      <button type="button" onClick={onResetClick} name="reset">
+      <button type="button" onClick={onResetClick}>
         Reset
       </button>
     </div>

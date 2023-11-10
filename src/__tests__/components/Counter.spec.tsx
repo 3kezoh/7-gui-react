@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { Counter } from "../../components";
 
 describe("Counter", () => {
-  it("should render the counter", () => {
+  it("should be in the document", () => {
     render(<Counter />);
 
     const counter = screen.getByTestId("counter");
@@ -14,9 +14,9 @@ describe("Counter", () => {
   it("should render the counter with the correct initial value", () => {
     render(<Counter initialValue={10} />);
 
-    const countElement = screen.getByTestId("count");
+    const countElement = screen.getByText(10);
 
-    expect(countElement).toHaveTextContent("10");
+    expect(countElement).toBeInTheDocument();
   });
 
   it("should render the counter with the correct value after incrementing", async () => {
@@ -24,13 +24,13 @@ describe("Counter", () => {
 
     render(<Counter />);
 
-    const incrementElement = screen.getByTestId("increment");
+    const incrementElement = screen.getByRole("button", { name: /count/i });
 
     await user.click(incrementElement);
 
-    const countElement = screen.getByTestId("count");
+    const countElement = screen.getByText(1);
 
-    expect(countElement).toHaveTextContent("1");
+    expect(countElement).toBeInTheDocument();
   });
 
   it("should render the counter with the correct value after incrementing multiple times", async () => {
@@ -38,13 +38,13 @@ describe("Counter", () => {
 
     render(<Counter />);
 
-    const incrementElement = screen.getByTestId("increment");
+    const incrementElement = screen.getByRole("button", { name: /count/i });
 
     await user.tripleClick(incrementElement);
 
-    const countElement = screen.getByTestId("count");
+    const countElement = screen.getByText(3);
 
-    expect(countElement).toHaveTextContent("3");
+    expect(countElement).toBeInTheDocument();
   });
 
   it("should match the snapshot", () => {

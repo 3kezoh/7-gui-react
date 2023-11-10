@@ -42,7 +42,6 @@ exports[`Timer > should match the snapshot 1`] = `
       />
     </div>
     <button
-      name="reset"
       type="button"
     >
       Reset

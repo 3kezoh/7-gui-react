@@ -8,24 +8,28 @@ exports[`TemperatureConverter > should match the snapshot 1`] = `
   >
     <input
       class="temperature"
-      data-testid="celsius"
+      id="celsius"
       name="celsius"
       type="number"
       value="0"
     />
-    <span>
+    <label
+      for="celsius"
+    >
       Celsius =
-    </span>
+    </label>
     <input
       class="temperature"
-      data-testid="fahrenheit"
+      id="fahrenheit"
       name="fahrenheit"
       type="number"
       value="32"
     />
-    <span>
+    <label
+      for="fahrenheit"
+    >
       Fahrenheit
-    </span>
+    </label>
   </div>
 </DocumentFragment>
 `;

@@ -6,17 +6,13 @@ exports[`FlightBooker > should match the snapshot 1`] = `
     class="flightBooker"
     data-testid="flightBooker"
   >
-    <select
-      data-testid="flight"
-    >
+    <select>
       <option
-        data-testid="oneWayFlight"
         value="one-way flight"
       >
         one-way flight
       </option>
       <option
-        data-testid="returnFlight"
         value="return flight"
       >
         return flight
@@ -37,9 +33,7 @@ exports[`FlightBooker > should match the snapshot 1`] = `
       type="date"
       value="1972-06-05"
     />
-    <button
-      data-testid="book"
-    >
+    <button>
       book
     </button>
   </div>
