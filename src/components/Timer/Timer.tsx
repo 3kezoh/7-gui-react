@@ -17,7 +17,7 @@ export function Timer({ step = 100, min = 0, max = 10_000 }: TimerProps) {
 
   const { stopInterval, resetInterval } = useInterval(
     () => setElapsedTime((elapsedTime) => elapsedTime + step),
-    step
+    step,
   );
 
   function onDurationChange({ target }: React.ChangeEvent<HTMLInputElement>) {

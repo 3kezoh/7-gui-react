@@ -58,7 +58,7 @@ describe("FlightBooker", () => {
       await user.click(bookButton);
 
       expect(alertSpy).toHaveBeenCalledWith(
-        "You have booked a one-way flight on 6/5/1972"
+        "You have booked a one-way flight on 6/5/1972",
       );
     });
 
@@ -156,7 +156,7 @@ describe("FlightBooker", () => {
       await user.click(bookButton);
 
       expect(alertSpy).toHaveBeenCalledWith(
-        "You have booked a return flight on 6/5/1972 to 3/25/1980"
+        "You have booked a return flight on 6/5/1972 to 3/25/1980",
       );
     });
 

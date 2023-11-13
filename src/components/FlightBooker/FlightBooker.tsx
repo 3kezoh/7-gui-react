@@ -48,7 +48,7 @@ export function FlightBooker() {
     const formattedReturnDate = dateTimeFormat.format(returnDate);
 
     alert(
-      `You have booked a ${flight} on ${formattedStartDate} to ${formattedReturnDate}`
+      `You have booked a ${flight} on ${formattedStartDate} to ${formattedReturnDate}`,
     );
   }
 
