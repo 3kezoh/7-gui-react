@@ -1,0 +1,82 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CRUD > should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="grid grid-cols-2 gap-2 w-fit border border-black p-4"
+    data-testid="crud"
+  >
+    <div
+      class="flex gap-2"
+    >
+      <label
+        for="prefix"
+      >
+        Filter prefix:
+      </label>
+      <input
+        class="border border-black w-full max-w-xs flex-1"
+        id="prefix"
+        name="prefix"
+        type="text"
+        value=""
+      />
+    </div>
+    <ul
+      class="row-start-2 m-0 p-0 border border-black"
+    />
+    <div
+      class="row-start-2 grid grid-cols-[max-content_1fr] gap-2 h-fit"
+    >
+      <label
+        for="name"
+      >
+        Name:
+      </label>
+      <input
+        class="border border-black w-full max-w-xs"
+        id="name"
+        name="name"
+        type="text"
+        value=""
+      />
+      <label
+        for="surname"
+      >
+        Surname:
+      </label>
+      <input
+        class="border border-black w-full max-w-xs"
+        id="surname"
+        name="surname"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="col-span-2 flex gap-2"
+    >
+      <button
+        class="border border-black px-2"
+        type="button"
+      >
+        Create
+      </button>
+      <button
+        class="border border-black px-2 cursor-not-allowed"
+        disabled=""
+        type="button"
+      >
+        Update
+      </button>
+      <button
+        class="border border-black px-2 cursor-not-allowed"
+        disabled=""
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

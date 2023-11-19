@@ -1,13 +1,19 @@
-import { Counter, TemperatureConverter, FlightBooker } from "./components";
-import { Timer } from "./components/Timer";
+import {
+  Counter,
+  TemperatureConverter,
+  FlightBooker,
+  CRUD,
+  Timer,
+} from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div className="container mx-auto p-4 grid gap-4">
       <Counter />
       <TemperatureConverter />
       <FlightBooker />
       <Timer />
+      <CRUD />
     </div>
   );
 }
