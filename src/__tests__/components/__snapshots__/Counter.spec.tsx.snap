@@ -3,16 +3,16 @@
 exports[`Counter > should match the snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="counter"
+    class="flex border border-black w-fit p-4 gap-2"
     data-testid="counter"
   >
     <div
-      class="count"
+      class="flex items-center"
     >
       0
     </div>
     <button
-      class="button"
+      class="border border-black px-2"
       type="button"
     >
       Count

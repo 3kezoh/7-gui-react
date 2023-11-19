@@ -1,5 +1,6 @@
 import { isFlight, isFlightDate, useFlightBooker } from "../../hooks";
-import classes from "./flightBooker.module.css";
+import { Button } from "../Button";
+import { Input } from "../Input";
 
 export function FlightBooker() {
   const [state, { setFlight, setFlightDate }] = useFlightBooker();
@@ -66,13 +67,16 @@ export function FlightBooker() {
   }
 
   return (
-    <div className={classes.flightBooker} data-testid="flightBooker">
+    <div
+      className="grid gap-4 p-4 border border-black w-fit"
+      data-testid="flightBooker"
+    >
       <select value={flight} onChange={onFlightChange}>
         <option value="one-way flight">one-way flight</option>
         <option value="return flight">return flight</option>
       </select>
-      <input
-        className={isStartDateValid ? undefined : classes.error}
+      <Input
+        className={isStartDateValid ? undefined : "text-red-600"}
         name="startDate"
         type="date"
         value={startDateAsString}
@@ -80,8 +84,8 @@ export function FlightBooker() {
         pattern="\d{4}-\d{2}-\d{2}"
         data-testid="startDate"
       />
-      <input
-        className={isReturnDateValid ? undefined : classes.error}
+      <Input
+        className={isReturnDateValid ? undefined : "text-red-600"}
         disabled={isOneWayFlight}
         name="returnDate"
         type="date"
@@ -90,9 +94,9 @@ export function FlightBooker() {
         pattern="\d{4}-\d{2}-\d{2}"
         data-testid="returnDate"
       />
-      <button onClick={onBookClick} disabled={!isBookable()}>
-        book
-      </button>
+      <Button onClick={onBookClick} disabled={!isBookable()}>
+        Book
+      </Button>
     </div>
   );
 }

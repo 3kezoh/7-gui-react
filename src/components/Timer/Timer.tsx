@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useInterval } from "../../hooks";
-import classes from "./Timer.module.css";
+import { Input } from "../Input";
+import { Button } from "../Button";
 
 export type TimerProps = {
   /** Specifies the amount of time in ms that the timer should advance with each tick or iteration. The default is 100 */
@@ -42,18 +43,20 @@ export function Timer({ step = 100, min = 0, max = 10_000 }: TimerProps) {
   const time = elapsedTime / 1000;
 
   return (
-    <div className={classes.timer} data-testid="timer">
-      <div className={classes.elapsedTime}>
+    <div
+      className="grid gap-4 p-4 border border-black w-fit"
+      data-testid="timer"
+    >
+      <div className="flex gap-2">
         <label htmlFor="time">Elapsed Time:</label>
         <progress id="time" max={duration} value={elapsedTime} />
       </div>
       <div>{time}s</div>
-      <div className={classes.duration}>
+      <div className="flex gap-2">
         <label htmlFor="duration">Duration:</label>
-        <input
+        <Input
           type="range"
           name="duration"
-          id="duration"
           step={step}
           value={duration}
           onChange={onDurationChange}
@@ -61,9 +64,7 @@ export function Timer({ step = 100, min = 0, max = 10_000 }: TimerProps) {
           max={max}
         />
       </div>
-      <button type="button" onClick={onResetClick}>
-        Reset
-      </button>
+      <Button onClick={onResetClick}>Reset</Button>
     </div>
   );
 }

@@ -71,7 +71,7 @@ describe("FlightBooker", () => {
 
       await user.clear(startDateInput);
 
-      expect(startDateInput).toHaveClass("error");
+      expect(startDateInput).toHaveClass("text-red-600");
     });
 
     it("should disable the book button when the start date is invalid", async () => {
@@ -177,7 +177,7 @@ describe("FlightBooker", () => {
 
       await user.clear(returnDateInput);
 
-      expect(returnDateInput).toHaveClass("error");
+      expect(returnDateInput).toHaveClass("text-red-600");
     });
 
     it("should disable the book button when the return date is invalid", async () => {

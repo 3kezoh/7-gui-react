@@ -3,11 +3,11 @@
 exports[`Timer > should match the snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="timer"
+    class="grid gap-4 p-4 border border-black w-fit"
     data-testid="timer"
   >
     <div
-      class="elapsedTime"
+      class="flex gap-2"
     >
       <label
         for="time"
@@ -24,7 +24,7 @@ exports[`Timer > should match the snapshot 1`] = `
       0s
     </div>
     <div
-      class="duration"
+      class="flex gap-2"
     >
       <label
         for="duration"
@@ -32,6 +32,7 @@ exports[`Timer > should match the snapshot 1`] = `
         Duration:
       </label>
       <input
+        class="border border-black w-full max-w-xs"
         id="duration"
         max="10000"
         min="0"
@@ -42,6 +43,7 @@ exports[`Timer > should match the snapshot 1`] = `
       />
     </div>
     <button
+      class="border border-black px-2"
       type="button"
     >
       Reset

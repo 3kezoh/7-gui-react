@@ -1,9 +1,9 @@
-import classes from "./temperatureConverter.module.css";
 import {
-  useTemperature,
   UseTemperatureParams,
   isTemperature,
+  useTemperature,
 } from "../../hooks";
+import { Input } from "../Input";
 
 type TemperatureConverterProps = UseTemperatureParams;
 
@@ -23,25 +23,23 @@ export function TemperatureConverter(props: TemperatureConverterProps) {
 
   return (
     <div
-      className={classes.temperatureConverter}
+      className="flex gap-4 p-4 border border-black w-fit"
       data-testid="temperatureConverter"
     >
-      <input
-        className={classes.temperature}
+      <Input
+        className="max-w-[3rem]"
         type="number"
         name="celsius"
         value={celsius.toString()}
         onChange={onChange}
-        id="celsius"
       />
       <label htmlFor="celsius">Celsius =</label>
-      <input
-        className={classes.temperature}
+      <Input
+        className="max-w-[3rem]"
         type="number"
         name="fahrenheit"
         value={fahrenheit.toString()}
         onChange={onChange}
-        id="fahrenheit"
       />
       <label htmlFor="fahrenheit">Fahrenheit</label>
     </div>

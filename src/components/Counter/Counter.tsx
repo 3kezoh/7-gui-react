@@ -1,5 +1,5 @@
 import { useCounter } from "../../hooks";
-import classes from "./counter.module.css";
+import { Button } from "../Button";
 
 type CounterProps = {
   /** The initial value of the counter, the default value is 0. */
@@ -13,11 +13,12 @@ export function Counter({ initialValue = 0 }: CounterProps): JSX.Element {
   const [count, increment] = useCounter(initialValue);
 
   return (
-    <div className={classes.counter} data-testid="counter">
-      <div className={classes.count}>{count}</div>
-      <button className={classes.button} onClick={increment} type="button">
-        Count
-      </button>
+    <div
+      className="flex border border-black w-fit p-4 gap-2"
+      data-testid="counter"
+    >
+      <div className="flex items-center">{count}</div>
+      <Button onClick={increment}>Count</Button>
     </div>
   );
 }

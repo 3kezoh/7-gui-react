@@ -3,7 +3,7 @@
 exports[`FlightBooker > should match the snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="flightBooker"
+    class="grid gap-4 p-4 border border-black w-fit"
     data-testid="flightBooker"
   >
     <select>
@@ -19,22 +19,29 @@ exports[`FlightBooker > should match the snapshot 1`] = `
       </option>
     </select>
     <input
+      class="border border-black w-full max-w-xs"
       data-testid="startDate"
+      id="startDate"
       name="startDate"
       pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
       type="date"
       value="1972-06-05"
     />
     <input
+      class="border border-black w-full max-w-xs"
       data-testid="returnDate"
       disabled=""
+      id="returnDate"
       name="returnDate"
       pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
       type="date"
       value="1972-06-05"
     />
-    <button>
-      book
+    <button
+      class="border border-black px-2"
+      type="button"
+    >
+      Book
     </button>
   </div>
 </DocumentFragment>
