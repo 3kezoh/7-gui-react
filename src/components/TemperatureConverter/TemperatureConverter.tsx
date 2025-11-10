@@ -27,7 +27,7 @@ export function TemperatureConverter(props: TemperatureConverterProps) {
       data-testid="temperatureConverter"
     >
       <Input
-        className="max-w-[3rem]"
+        className="max-w-12"
         type="number"
         name="celsius"
         value={celsius.toString()}
@@ -35,7 +35,7 @@ export function TemperatureConverter(props: TemperatureConverterProps) {
       />
       <label htmlFor="celsius">Celsius =</label>
       <Input
-        className="max-w-[3rem]"
+        className="max-w-12"
         type="number"
         name="fahrenheit"
         value={fahrenheit.toString()}
