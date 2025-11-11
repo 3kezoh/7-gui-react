@@ -26,11 +26,11 @@ export function isTemperature(str: string): str is Temperature {
  * Determines the initial state of the reducer.
  */
 function getInitialState({ celsius, fahrenheit }: UseTemperatureParams) {
-  if (celsius && isFinite(celsius)) {
+  if (celsius && Number.isFinite(celsius)) {
     return { celsius, fahrenheit: toFahrenheit(celsius) };
   }
 
-  if (fahrenheit && isFinite(fahrenheit)) {
+  if (fahrenheit && Number.isFinite(fahrenheit)) {
     return { celsius: toCelsius(fahrenheit), fahrenheit };
   }
 

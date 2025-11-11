@@ -1,5 +1,5 @@
 import {
-  UseTemperatureParams,
+  type UseTemperatureParams,
   isTemperature,
   useTemperature,
 } from "../../hooks";

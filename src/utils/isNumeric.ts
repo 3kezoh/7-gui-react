@@ -2,5 +2,5 @@
  * Determines whether `str` is a numeric value.
  */
 export function isNumeric(str: string) {
-  return !isNaN(+str) && !isNaN(parseFloat(str));
+  return !Number.isNaN(+str) && !Number.isNaN(parseFloat(str));
 }
