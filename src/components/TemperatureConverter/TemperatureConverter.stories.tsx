@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import TemperatureConverter from "./TemperatureConverter";
 
 const meta = {
-  component: TemperatureConverter,
+	component: TemperatureConverter,
 } satisfies Meta<typeof TemperatureConverter>;
 
 type Story = StoryObj<typeof meta>;

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import CRUD from "./CRUD";
 
 const meta = {
-  component: CRUD,
+	component: CRUD,
 } satisfies Meta<typeof CRUD>;
 
 type Story = StoryObj<typeof meta>;

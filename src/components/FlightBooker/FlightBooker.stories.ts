@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import FlightBooker from "./FlightBooker";
 
 const meta = {
-  component: FlightBooker,
+	component: FlightBooker,
 } satisfies Meta<typeof FlightBooker>;
 
 type Story = StoryObj<typeof meta>;

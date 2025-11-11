@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import Timer from "./Timer";
 
 const meta = {
-  component: Timer,
+	component: Timer,
 } satisfies Meta<typeof Timer>;
 
 type Story = StoryObj<typeof meta>;

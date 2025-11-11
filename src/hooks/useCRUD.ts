@@ -1,35 +1,35 @@
 import { useState } from "react";
 
 export type Identifiable = {
-  id: string;
+	id: string;
 };
 
 export function useCRUD<T extends Identifiable>(
-  initialEntities: readonly T[] = [],
+	initialEntities: readonly T[] = [],
 ) {
-  const [entities, setEntities] = useState(initialEntities);
+	const [entities, setEntities] = useState(initialEntities);
 
-  function create(payload: Omit<T, "id">) {
-    const entity = { ...payload, id: crypto.randomUUID() } as T;
+	function create(payload: Omit<T, "id">) {
+		const entity = { ...payload, id: crypto.randomUUID() } as T;
 
-    setEntities([...entities, entity]);
-  }
+		setEntities([...entities, entity]);
+	}
 
-  function update(payload: T) {
-    setEntities(
-      entities.map((entity) => {
-        if (entity.id === payload.id) {
-          return payload;
-        }
+	function update(payload: T) {
+		setEntities(
+			entities.map((entity) => {
+				if (entity.id === payload.id) {
+					return payload;
+				}
 
-        return entity;
-      }),
-    );
-  }
+				return entity;
+			}),
+		);
+	}
 
-  function remove(payload: Identifiable["id"]) {
-    setEntities(entities.filter(({ id }) => id !== payload));
-  }
+	function remove(payload: Identifiable["id"]) {
+		setEntities(entities.filter(({ id }) => id !== payload));
+	}
 
-  return [entities, { create, update, remove }] as const;
+	return [entities, { create, update, remove }] as const;
 }

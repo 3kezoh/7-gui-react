@@ -4,5 +4,5 @@
  * @returns The temperature in Fahrenheit.
  */
 export function toFahrenheit(celsius: number) {
-  return celsius * (9 / 5) + 32;
+	return celsius * (9 / 5) + 32;
 }

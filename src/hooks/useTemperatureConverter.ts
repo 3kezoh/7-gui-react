@@ -6,84 +6,84 @@ type Temperature = "celsius" | "fahrenheit";
 type ACTIONTYPE = { type: Temperature; payload: string };
 
 type State = {
-  celsius: number | string;
-  fahrenheit: number | string;
+	celsius: number | string;
+	fahrenheit: number | string;
 };
 
 const initialState = {
-  celsius: 0,
-  fahrenheit: 32,
+	celsius: 0,
+	fahrenheit: 32,
 } satisfies State;
 
 /**
  * Determines whether `str` is a `Temperature`.
  */
 export function isTemperature(str: string): str is Temperature {
-  return ["celsius", "fahrenheit"].includes(str);
+	return ["celsius", "fahrenheit"].includes(str);
 }
 
 /**
  * Determines the initial state of the reducer.
  */
 function getInitialState({ celsius, fahrenheit }: UseTemperatureParams) {
-  if (celsius && Number.isFinite(celsius)) {
-    return { celsius, fahrenheit: toFahrenheit(celsius) };
-  }
+	if (celsius && Number.isFinite(celsius)) {
+		return { celsius, fahrenheit: toFahrenheit(celsius) };
+	}
 
-  if (fahrenheit && Number.isFinite(fahrenheit)) {
-    return { celsius: toCelsius(fahrenheit), fahrenheit };
-  }
+	if (fahrenheit && Number.isFinite(fahrenheit)) {
+		return { celsius: toCelsius(fahrenheit), fahrenheit };
+	}
 
-  return initialState;
+	return initialState;
 }
 
 function reducer(state: State, { type, payload }: ACTIONTYPE) {
-  switch (type) {
-    case "celsius":
-      return {
-        ...state,
-        celsius: payload,
-        ...(isNumeric(payload) && { fahrenheit: toFahrenheit(+payload) }),
-      };
+	switch (type) {
+		case "celsius":
+			return {
+				...state,
+				celsius: payload,
+				...(isNumeric(payload) && { fahrenheit: toFahrenheit(+payload) }),
+			};
 
-    case "fahrenheit":
-      return {
-        ...state,
-        fahrenheit: payload,
-        ...(isNumeric(payload) && { celsius: toCelsius(+payload) }),
-      };
+		case "fahrenheit":
+			return {
+				...state,
+				fahrenheit: payload,
+				...(isNumeric(payload) && { celsius: toCelsius(+payload) }),
+			};
 
-    /* c8 ignore next 2 */
-    default:
-      return state;
-  }
+		/* c8 ignore next 2 */
+		default:
+			return state;
+	}
 }
 
 export type UseTemperatureParams =
-  | {
-      /** The initial temperature in degrees Celsius, the default value is 0. */
-      celsius?: number;
-      /** This value cannot be set if `celsius` is set. */
-      fahrenheit?: never;
-    }
-  | {
-      /** This value cannot be set if `fahrenheit` is set. */
-      celsius?: never;
-      /** The initial temperature in degrees Fahrenheit, the default value is 32. */
-      fahrenheit?: number;
-    };
+	| {
+			/** The initial temperature in degrees Celsius, the default value is 0. */
+			celsius?: number;
+			/** This value cannot be set if `celsius` is set. */
+			fahrenheit?: never;
+	  }
+	| {
+			/** This value cannot be set if `fahrenheit` is set. */
+			celsius?: never;
+			/** The initial temperature in degrees Fahrenheit, the default value is 32. */
+			fahrenheit?: number;
+	  };
 
 export function useTemperature(params: UseTemperatureParams) {
-  const initialState = getInitialState(params);
-  const [state, dispatch] = useReducer(reducer, initialState);
+	const initialState = getInitialState(params);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-  /**
-   * Updates the temperature in the specified `unit`, the other unit(s) will be
-   * automatically converted if possible.
-   */
-  function setTemperature(value: string, unit: Temperature) {
-    dispatch({ type: unit, payload: value });
-  }
+	/**
+	 * Updates the temperature in the specified `unit`, the other unit(s) will be
+	 * automatically converted if possible.
+	 */
+	function setTemperature(value: string, unit: Temperature) {
+		dispatch({ type: unit, payload: value });
+	}
 
-  return [state, setTemperature] as const;
+	return [state, setTemperature] as const;
 }
