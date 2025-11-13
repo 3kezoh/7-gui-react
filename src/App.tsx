@@ -1,4 +1,5 @@
 import {
+	CircleDrawer,
 	Counter,
 	CRUD,
 	FlightBooker,
@@ -14,6 +15,7 @@ function App() {
 			<FlightBooker />
 			<Timer />
 			<CRUD />
+			<CircleDrawer />
 		</div>
 	);
 }
