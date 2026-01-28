@@ -1,40 +1,287 @@
-import type React from "react";
-import { useEffect, useRef } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { at, unref } from "../../utils";
+import useFocus from "./useFocus";
+
+type Point = { x: number; y: number };
+type Circle = Point & { radius: number };
+type SelectedCircle = Circle & { isSelected: boolean };
+type Nullable<T> = T | null;
 
 export function CircleDrawer() {
-	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-	const context = canvasRef.current?.getContext("2d");
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	const divRef = useRef<HTMLDivElement>(null);
+	const [circles, setCircles] = useState<SelectedCircle[]>([]);
+	const [index, setIndex] = useState<Nullable<number>>(null);
+	const [radius, setRadius] = useState(10);
+	const selectedCircle = index === null ? null : at(circles, index);
+	const [focus, dispatch] = useFocus();
+	const getNearestCircleIndexFromCircles = getNearestCircleIndexFrom(circles);
 
-	function getCircle(x: number, y: number, radius: number) {
-		const path = new Path2D();
+	useEffect(() => {
+		const [canvas] = unref(canvasRef);
+		const context = canvas.getContext("2d");
 
-		path.arc(x, y, radius, 0, 2 * Math.PI);
+		if (!context) {
+			return;
+		}
 
-		return path;
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		circles.forEach((circle) => {
+			const path = getCirclePath(circle);
+
+			if (circle.isSelected) {
+				withFillStyle(context, "gray", (context) => {
+					context.fill(path);
+				});
+
+				return;
+			}
+
+			context.stroke(path);
+		});
+	}, [circles]);
+
+	useEffect(() => {
+		function onPointerDown({ target }: PointerEvent) {
+			const isNode = target instanceof Node;
+
+			if (!isNode) {
+				return;
+			}
+
+			const [button, canvas, div] = unref(buttonRef, canvasRef, divRef);
+
+			if (
+				button.contains(target) ||
+				canvas.contains(target) ||
+				div.contains(target)
+			) {
+				return;
+			}
+
+			dispatch("FOCUS_CANVAS");
+		}
+
+		window.addEventListener("pointerdown", onPointerDown);
+
+		return () => window.removeEventListener("pointerdown", onPointerDown);
+	});
+
+	useLayoutEffect(() => {
+		const [button, canvas, div] = unref(buttonRef, canvasRef, divRef);
+		const { bottom, width, top, left } = canvas.getBoundingClientRect();
+
+		const actions = {
+			CANVAS: () => {
+				button.hidePopover();
+				div.hidePopover();
+			},
+			BUTTON: () => {
+				if (!selectedCircle) {
+					return;
+				}
+
+				button.style.top = `${top + selectedCircle.y}px`;
+				button.style.left = `${left + selectedCircle.x}px`;
+
+				button.showPopover();
+				div.hidePopover();
+			},
+			DIV: () => {
+				div.style.top = `${bottom - 10}px`;
+				div.style.left = `${left + width / 2}px`;
+				div.style.maxWidth = `${width - 20}px`;
+
+				button.hidePopover();
+				div.showPopover();
+			},
+		};
+
+		actions[focus]();
+	}, [focus, selectedCircle]);
+
+	function onClick({ target, ...event }: MouseEvent<HTMLCanvasElement>) {
+		if (focus !== "CANVAS") {
+			setNearestCircle(event);
+
+			return dispatch("FOCUS_CANVAS");
+		}
+
+		const [canvas] = unref(canvasRef);
+		const point = getCanvasPosition(canvas, event);
+
+		setCircles((circles) =>
+			circles
+				.map((circle) => ({ ...circle, isSelected: false }))
+				.concat([{ ...point, radius: 10, isSelected: true }]),
+		);
+
+		setIndex(-1);
 	}
 
-	function onClick(event: React.MouseEvent<HTMLCanvasElement>) {
-		debugger;
+	function onContextMenu(event: MouseEvent<HTMLCanvasElement>) {
+		event.preventDefault();
+
+		if (focus !== "CANVAS") {
+			setNearestCircle(event);
+
+			return dispatch("FOCUS_CANVAS");
+		}
+
+		dispatch("OPEN_CONTEXT_MENU");
 	}
 
-	function getPosition<T extends HTMLCanvasElement>(
-		canvas: T,
-		event: React.MouseEvent<T>,
-	) {
-		const boundingClientRect = canvas.getBoundingClientRect();
-		const x = event.clientX - boundingClientRect.left;
-		const y = event.clientY - boundingClientRect.right;
+	function onMouseMove(event: MouseEvent<HTMLCanvasElement>) {
+		if (focus !== "CANVAS") {
+			return;
+		}
 
-		return { x, y };
+		setNearestCircle(event);
+	}
+
+	function setNearestCircle(event: Pick<MouseEvent, "clientX" | "clientY">) {
+		const [canvas] = unref(canvasRef);
+		const point = getCanvasPosition(canvas, event);
+		const nearestCircleIndex = getNearestCircleIndexFromCircles(point);
+
+		setCircles((circles) =>
+			circles.map((circle, index) => ({
+				...circle,
+				isSelected: nearestCircleIndex === index,
+			})),
+		);
+
+		setIndex(nearestCircleIndex);
+	}
+
+	function onButtonClick(event: MouseEvent<HTMLButtonElement>) {
+		event.preventDefault();
+
+		if (!selectedCircle) {
+			return;
+		}
+
+		setRadius(selectedCircle.radius);
+
+		dispatch("OPEN_DIAMATER_SELECT");
+	}
+
+	function onChange(event: ChangeEvent<HTMLInputElement>) {
+		if (!selectedCircle || index === null) {
+			return;
+		}
+
+		const radius = +event.target.value;
+
+		setRadius(radius);
+		setCircles((circles) => circles.with(index, { ...selectedCircle, radius }));
 	}
 
 	return (
-		<div className="border w-max" data-testid="circleDrawer">
-			<canvas ref={canvasRef} width={150} height={150} onClick={onClick}>
+		<div className="border w-max relative" data-testid="circleDrawer">
+			<canvas
+				ref={canvasRef}
+				width={300}
+				height={300}
+				onClick={onClick}
+				onContextMenu={onContextMenu}
+				onMouseMove={onMouseMove}
+			>
 				This feature is not supported by your browser
 			</canvas>
+			<button
+				type="button"
+				popover="manual"
+				ref={buttonRef}
+				className="border bg-white p-2"
+				onClick={onButtonClick}
+			>
+				Adjust diameter..
+			</button>
+			<div
+				popover="manual"
+				ref={divRef}
+				className="border -translate-x-1/2 -translate-y-full p-2"
+			>
+				Adjust diamater of circle at ({selectedCircle?.x}, {selectedCircle?.y})
+				<input
+					type="range"
+					step={1}
+					min={1}
+					max={100}
+					value={radius}
+					onChange={onChange}
+				/>
+			</div>
 		</div>
 	);
 }
 
 export default CircleDrawer;
+
+function getSquaredDistanceFrom({ x: xA, y: yA }: Point) {
+	return ({ x: xB, y: yB }: Point) => {
+		return (xB - xA) ** 2 + (yB - yA) ** 2;
+	};
+}
+
+function getNearestCircleIndexFrom(circles: Circle[]) {
+	return (point: Point) => {
+		const getSquaredDistanceFromPoint = getSquaredDistanceFrom(point);
+
+		const [nearestCircleIndex] = circles.reduce<[Nullable<number>, number]>(
+			([nearestCircleIndex, nearestCircleDistance], circle, index) => {
+				const distance = getSquaredDistanceFromPoint(circle);
+
+				if (distance > circle.radius ** 2) {
+					return [nearestCircleIndex, nearestCircleDistance];
+				}
+
+				if (distance > nearestCircleDistance) {
+					return [nearestCircleIndex, nearestCircleDistance];
+				}
+
+				return [index, distance];
+			},
+			[null, Infinity],
+		);
+
+		return nearestCircleIndex;
+	};
+}
+
+function getCirclePath({ x, y, radius }: Circle) {
+	const path = new Path2D();
+
+	path.arc(x, y, radius, 0, 2 * Math.PI);
+
+	return path;
+}
+
+function getCanvasPosition<T extends HTMLCanvasElement>(
+	canvas: T,
+	{ clientX, clientY }: Pick<MouseEvent, "clientX" | "clientY">,
+) {
+	const { left, top } = canvas.getBoundingClientRect();
+	const x = clientX - left;
+	const y = clientY - top;
+
+	return { x, y };
+}
+
+function withFillStyle<T extends CanvasRenderingContext2D>(
+	context: T,
+	color: CanvasFillStrokeStyles["fillStyle"],
+	draw: (context: T) => void,
+) {
+	context.save();
+
+	context.fillStyle = color;
+
+	draw(context);
+
+	context.restore();
+}
