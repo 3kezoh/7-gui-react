@@ -57,20 +57,20 @@ exports[`CRUD > should match the snapshot 1`] = `
       class="col-span-2 flex gap-2"
     >
       <button
-        class="border border-black px-2"
+        class="border px-2 transition-colors hover:text-white hover:bg-black"
         type="button"
       >
         Create
       </button>
       <button
-        class="border border-black px-2 cursor-not-allowed"
+        class="border px-2 cursor-not-allowed bg-gray-200 text-gray-400 border-gray-400"
         disabled=""
         type="button"
       >
         Update
       </button>
       <button
-        class="border border-black px-2 cursor-not-allowed"
+        class="border px-2 cursor-not-allowed bg-gray-200 text-gray-400 border-gray-400"
         disabled=""
         type="button"
       >

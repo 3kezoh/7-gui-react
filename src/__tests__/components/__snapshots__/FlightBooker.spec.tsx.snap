@@ -23,7 +23,7 @@ exports[`FlightBooker > should match the snapshot 1`] = `
       data-testid="startDate"
       id="startDate"
       name="startDate"
-      pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
+      pattern="\\d{4}-\\d{2}-\\d{2}"
       type="date"
       value="1972-06-05"
     />
@@ -33,12 +33,12 @@ exports[`FlightBooker > should match the snapshot 1`] = `
       disabled=""
       id="returnDate"
       name="returnDate"
-      pattern="\\\\d{4}-\\\\d{2}-\\\\d{2}"
+      pattern="\\d{4}-\\d{2}-\\d{2}"
       type="date"
       value="1972-06-05"
     />
     <button
-      class="border border-black px-2"
+      class="border px-2 transition-colors hover:text-white hover:bg-black"
       type="button"
     >
       Book

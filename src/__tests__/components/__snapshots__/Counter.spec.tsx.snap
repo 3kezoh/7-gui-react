@@ -12,7 +12,7 @@ exports[`Counter > should match the snapshot 1`] = `
       0
     </div>
     <button
-      class="border border-black px-2"
+      class="border px-2 transition-colors hover:text-white hover:bg-black"
       type="button"
     >
       Count

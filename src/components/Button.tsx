@@ -3,10 +3,10 @@ import { cn } from "../utils";
 type ButtonProps = React.ComponentPropsWithoutRef<"button">;
 
 export function Button(props: ButtonProps) {
-	const { className, disabled, ...rest } = props;
+	const { className, disabled, type, ...rest } = props;
 
 	const buttonClassName = cn(
-		"border border-black px-2",
+		"border px-2",
 		className,
 		{
 			"transition-colors hover:text-white hover:bg-black": !disabled,
@@ -20,7 +20,7 @@ export function Button(props: ButtonProps) {
 		<button
 			className={buttonClassName}
 			disabled={disabled}
-			type="button"
+			type={type ?? "button"}
 			{...rest}
 		/>
 	);
