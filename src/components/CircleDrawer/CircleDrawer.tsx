@@ -1,6 +1,8 @@
 import type { ChangeEvent, MouseEvent } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useHistory } from "../../hooks";
 import { at, unref } from "../../utils";
+import { Button } from "../Button";
 import useFocus from "./useFocus";
 
 type Point = { x: number; y: number };
@@ -12,12 +14,16 @@ export function CircleDrawer() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const divRef = useRef<HTMLDivElement>(null);
-	const [circles, setCircles] = useState<SelectedCircle[]>([]);
+	const [draft, setDraft] = useState<SelectedCircle[]>([]);
 	const [index, setIndex] = useState<Nullable<number>>(null);
 	const [radius, setRadius] = useState(10);
-	const selectedCircle = index === null ? null : at(circles, index);
+	const selectedCircle = index === null ? null : at(draft, index);
 	const [focus, dispatch] = useFocus();
-	const getNearestCircleIndexFromCircles = getNearestCircleIndexFrom(circles);
+	const getNearestCircleIndexFromCircles = getNearestCircleIndexFrom(draft);
+
+	const [committed, { commit, redo, undo, canRedo, canUndo }] = useHistory<
+		SelectedCircle[]
+	>([]);
 
 	useEffect(() => {
 		const [canvas] = unref(canvasRef);
@@ -29,7 +35,7 @@ export function CircleDrawer() {
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
-		circles.forEach((circle) => {
+		draft.forEach((circle) => {
 			const path = getCirclePath(circle);
 
 			if (circle.isSelected) {
@@ -42,7 +48,7 @@ export function CircleDrawer() {
 
 			context.stroke(path);
 		});
-	}, [circles]);
+	}, [draft]);
 
 	useEffect(() => {
 		function onPointerDown({ target }: PointerEvent) {
@@ -69,6 +75,10 @@ export function CircleDrawer() {
 
 		return () => window.removeEventListener("pointerdown", onPointerDown);
 	});
+
+	useEffect(() => {
+		setDraft(committed);
+	}, [committed]);
 
 	useLayoutEffect(() => {
 		const [button, canvas, div] = unref(buttonRef, canvasRef, divRef);
@@ -113,12 +123,15 @@ export function CircleDrawer() {
 		const [canvas] = unref(canvasRef);
 		const point = getCanvasPosition(canvas, event);
 
-		setCircles((circles) =>
-			circles
-				.map((circle) => ({ ...circle, isSelected: false }))
-				.concat([{ ...point, radius: 10, isSelected: true }]),
-		);
+		const nextCircles = draft.map((circle) => ({
+			...circle,
+			isSelected: false,
+		}));
 
+		const circle = { ...point, radius: 10 };
+
+		commit([...nextCircles, { ...circle, isSelected: false }]);
+		setDraft([...nextCircles, { ...circle, isSelected: true }]);
 		setIndex(-1);
 	}
 
@@ -147,7 +160,7 @@ export function CircleDrawer() {
 		const point = getCanvasPosition(canvas, event);
 		const nearestCircleIndex = getNearestCircleIndexFromCircles(point);
 
-		setCircles((circles) =>
+		setDraft((circles) =>
 			circles.map((circle, index) => ({
 				...circle,
 				isSelected: nearestCircleIndex === index,
@@ -175,13 +188,26 @@ export function CircleDrawer() {
 		}
 
 		const radius = +event.target.value;
+		const nextCircles = draft.with(index, { ...selectedCircle, radius });
 
 		setRadius(radius);
-		setCircles((circles) => circles.with(index, { ...selectedCircle, radius }));
+		setDraft(nextCircles);
+	}
+
+	function onBlur() {
+		commit(draft.map((circle) => ({ ...circle, isSelected: false })));
 	}
 
 	return (
 		<div className="border w-max relative" data-testid="circleDrawer">
+			<fieldset className="flex gap-2 p-2 mx-auto w-fit">
+				<Button onClick={undo} disabled={!canUndo}>
+					Undo
+				</Button>
+				<Button onClick={redo} disabled={!canRedo}>
+					Redo
+				</Button>
+			</fieldset>
 			<canvas
 				ref={canvasRef}
 				width={300}
@@ -214,6 +240,7 @@ export function CircleDrawer() {
 					max={100}
 					value={radius}
 					onChange={onChange}
+					onBlur={onBlur}
 				/>
 			</div>
 		</div>
