@@ -3,7 +3,7 @@ import { isNumeric, toCelsius, toFahrenheit } from "../utils";
 
 type Temperature = "celsius" | "fahrenheit";
 
-type ACTIONTYPE = { type: Temperature; payload: string };
+type Action = { type: Temperature; payload: string };
 
 type State = {
 	celsius: number | string;
@@ -37,7 +37,7 @@ function getInitialState({ celsius, fahrenheit }: UseTemperatureParams) {
 	return initialState;
 }
 
-function reducer(state: State, { type, payload }: ACTIONTYPE) {
+function reducer(state: State, { type, payload }: Action) {
 	switch (type) {
 		case "celsius":
 			return {

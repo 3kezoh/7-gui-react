@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 
 type Flight = "one-way flight" | "return flight";
-
 type FlightDate = "startDate" | "returnDate";
 
 type State = {
@@ -10,7 +9,7 @@ type State = {
 	returnDateAsString: string;
 };
 
-type ACTIONTYPE =
+type Action =
 	| { type: FlightDate; payload: string }
 	| { type: "flight"; payload: Flight };
 
@@ -28,7 +27,7 @@ export function isFlightDate(str: string): str is FlightDate {
 	return ["startDate", "returnDate"].includes(str);
 }
 
-function reducer(state: State, { type, payload }: ACTIONTYPE): State {
+function reducer(state: State, { type, payload }: Action): State {
 	switch (type) {
 		case "flight":
 			return {
