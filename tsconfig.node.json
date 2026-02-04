@@ -1,9 +1,8 @@
 {
 	"compilerOptions": {
 		"composite": true,
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
-		"allowSyntheticDefaultImports": true
+		"module": "esnext",
+		"moduleResolution": "bundler"
 	},
-	"include": ["vite.config.ts", "vitest.config.ts"]
+	"include": ["vite.config.ts"]
 }

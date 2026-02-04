@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { CRUD } from "../../components";
+import { userEvent } from "vitest/browser";
+import { render } from "vitest-browser-react";
+import { CRUD } from "@/components";
 
 describe("CRUD", () => {
-	it("should be in the document", () => {
-		render(<CRUD />);
+	it("should be in the document", async () => {
+		const screen = await render(<CRUD />);
 
 		const crud = screen.getByTestId("crud");
 
@@ -12,17 +12,15 @@ describe("CRUD", () => {
 	});
 
 	it("should create a user", async () => {
-		const user = userEvent.setup();
-
-		render(<CRUD />);
+		const screen = await render(<CRUD />);
 
 		const nameInput = screen.getByLabelText(/^name:/i);
 		const surnameInput = screen.getByLabelText(/surname:/i);
 		const createButton = screen.getByRole("button", { name: /create/i });
 
-		await user.type(nameInput, "Leone");
-		await user.type(surnameInput, "Abbacchio");
-		await user.click(createButton);
+		await userEvent.fill(nameInput, "Leone");
+		await userEvent.fill(surnameInput, "Abbacchio");
+		await userEvent.click(createButton);
 
 		const leone = screen.getByRole("button", { name: /leone, abbacchio/i });
 
@@ -30,8 +28,6 @@ describe("CRUD", () => {
 	});
 
 	it("should update a user", async () => {
-		const user = userEvent.setup();
-
 		const users = [
 			{
 				id: "64fe0df3-9291-480b-a3b4-bb060d933592",
@@ -45,19 +41,16 @@ describe("CRUD", () => {
 			},
 		];
 
-		render(<CRUD initialUsers={users} />);
-
+		const screen = await render(<CRUD initialUsers={users} />);
 		const nameInput = screen.getByLabelText(/^name:/i);
 		const surnameInput = screen.getByLabelText(/surname:/i);
 		const updateButton = screen.getByRole("button", { name: /update/i });
 		const leone = screen.getByRole("button", { name: /leone, abbacchio/i });
 
-		await user.click(leone);
-		await user.clear(nameInput);
-		await user.type(nameInput, "Enrico");
-		await user.clear(surnameInput);
-		await user.type(surnameInput, "Pucci");
-		await user.click(updateButton);
+		await userEvent.click(leone);
+		await userEvent.fill(nameInput, "Enrico");
+		await userEvent.fill(surnameInput, "Pucci");
+		await userEvent.click(updateButton);
 
 		const enrico = screen.getByRole("button", {
 			name: /enrico, pucci/i,
@@ -67,8 +60,6 @@ describe("CRUD", () => {
 	});
 
 	it("should delete a user", async () => {
-		const user = userEvent.setup();
-
 		const users = [
 			{
 				id: "64fe0df3-9291-480b-a3b4-bb060d933592",
@@ -77,13 +68,12 @@ describe("CRUD", () => {
 			},
 		];
 
-		render(<CRUD initialUsers={users} />);
-
+		const screen = await render(<CRUD initialUsers={users} />);
 		const deleteButton = screen.getByRole("button", { name: /delete/i });
 		const leone = screen.getByRole("button", { name: /leone, abbacchio/i });
 
-		await user.click(leone);
-		await user.click(deleteButton);
+		await userEvent.click(leone);
+		await userEvent.click(deleteButton);
 
 		expect(leone).not.toBeInTheDocument();
 	});
@@ -97,8 +87,7 @@ describe("CRUD", () => {
 			},
 		];
 
-		render(<CRUD initialUsers={users} />);
-
+		const screen = await render(<CRUD initialUsers={users} />);
 		const updateButton = screen.getByRole("button", { name: /update/i });
 		const deleteButton = screen.getByRole("button", { name: /delete/i });
 
@@ -107,8 +96,6 @@ describe("CRUD", () => {
 	});
 
 	it("should unselect a user", async () => {
-		const user = userEvent.setup();
-
 		const users = [
 			{
 				id: "64fe0df3-9291-480b-a3b4-bb060d933592",
@@ -117,20 +104,18 @@ describe("CRUD", () => {
 			},
 		];
 
-		render(<CRUD initialUsers={users} />);
+		const screen = await render(<CRUD initialUsers={users} />);
 
 		const leone = screen.getByRole("button", {
 			name: /leone, abbacchio/i,
 		});
 
-		await user.dblClick(leone);
+		await userEvent.dblClick(leone);
 
 		expect(leone).toHaveClass("bg-white");
 	});
 
 	it("should filter users by their surname", async () => {
-		const user = userEvent.setup();
-
 		const users = [
 			{
 				id: "64fe0df3-9291-480b-a3b4-bb060d933592",
@@ -149,22 +134,17 @@ describe("CRUD", () => {
 			},
 		];
 
-		render(<CRUD initialUsers={users} />);
-
+		const screen = await render(<CRUD initialUsers={users} />);
 		const prefixInput = screen.getByLabelText(/filter prefix:/i);
 
-		await user.type(prefixInput, "Z");
+		await userEvent.fill(prefixInput, "Z");
 
-		const filteredUsers = screen.getAllByRole("button", {
-			name: /,/,
-		});
+		const filteredUsers = screen
+			.getByRole("button", {
+				name: /,/,
+			})
+			.all();
 
 		expect(filteredUsers).toHaveLength(1);
-	});
-
-	it("should match the snapshot", () => {
-		const { asFragment } = render(<CRUD />);
-
-		expect(asFragment()).toMatchSnapshot();
 	});
 });

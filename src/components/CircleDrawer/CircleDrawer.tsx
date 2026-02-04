@@ -1,7 +1,7 @@
 import type { ChangeEvent, MouseEvent } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useHistory } from "../../hooks";
-import { at, unref } from "../../utils";
+import { useHistory } from "@/hooks";
+import { at, unref } from "@/utils";
 import { Button } from "../Button";
 import useFocus from "./useFocus";
 

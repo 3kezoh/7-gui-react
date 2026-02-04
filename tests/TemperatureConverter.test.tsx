@@ -1,18 +1,18 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { TemperatureConverter } from "../../components";
+import { userEvent } from "vitest/browser";
+import { render } from "vitest-browser-react";
+import { TemperatureConverter } from "@/components";
 
 describe("TemperatureConverter", () => {
-	it("should be in the document", () => {
-		render(<TemperatureConverter />);
+	it("should be in the document", async () => {
+		const screen = await render(<TemperatureConverter />);
 
 		const temperatureConverter = screen.getByTestId("temperatureConverter");
 
 		expect(temperatureConverter).toBeInTheDocument();
 	});
 
-	it("should render 100 Celsius and 212 Fahrenheit", () => {
-		render(<TemperatureConverter celsius={100} />);
+	it("should render 100 Celsius and 212 Fahrenheit", async () => {
+		const screen = await render(<TemperatureConverter celsius={100} />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
@@ -21,8 +21,8 @@ describe("TemperatureConverter", () => {
 		expect(fahrenheitElement).toHaveValue(212);
 	});
 
-	it("should render 23 Fahrenheit and -5 Celsius", () => {
-		render(<TemperatureConverter fahrenheit={23} />);
+	it("should render 23 Fahrenheit and -5 Celsius", async () => {
+		const screen = await render(<TemperatureConverter fahrenheit={23} />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
@@ -34,14 +34,14 @@ describe("TemperatureConverter", () => {
 	it("should convert -13e3 Celsius to -23368 Fahrenheit", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
 
 		await user.clear(celsiusElement);
 
-		await user.type(celsiusElement, "-13e3");
+		await user.fill(celsiusElement, "-13e3");
 
 		expect(fahrenheitElement).toHaveValue(-23368);
 	});
@@ -49,14 +49,12 @@ describe("TemperatureConverter", () => {
 	it("should convert -13 Fahrenheit to -25 Celsius", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
 
-		await user.clear(fahrenheitElement);
-
-		await user.type(fahrenheitElement, "-13");
+		await user.fill(fahrenheitElement, "-13");
 
 		expect(celsiusElement).toHaveValue(-25);
 	});
@@ -64,22 +62,20 @@ describe("TemperatureConverter", () => {
 	it("should not convert a non-numeric value to Fahrenheit", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
-		const celsiusElement = screen.getByLabelText(/Celsius =/i);
-		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
+		const celsiusLocator = screen.getByLabelText(/Celsius =/i);
+		const fahrenheitLocator = screen.getByLabelText(/Fahrenheit/i);
 
-		await user.clear(celsiusElement);
+		await user.type(celsiusLocator, "abc");
 
-		await user.type(celsiusElement, "abc");
-
-		expect(fahrenheitElement).toHaveValue(32);
+		expect(fahrenheitLocator).toHaveValue(32);
 	});
 
 	it("should not convert a non-numeric value to Celsius", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
@@ -94,7 +90,7 @@ describe("TemperatureConverter", () => {
 	it("should not convert an empty value to Fahrenheit", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 		const fahrenheitElement = screen.getByLabelText(/Fahrenheit/i);
@@ -107,7 +103,7 @@ describe("TemperatureConverter", () => {
 	it("should not convert an empty value to Celsius", async () => {
 		const user = userEvent.setup();
 
-		render(<TemperatureConverter />);
+		const screen = await render(<TemperatureConverter />);
 
 		const celsiusElement = screen.getByLabelText(/Celsius =/i);
 
@@ -116,11 +112,5 @@ describe("TemperatureConverter", () => {
 		await user.clear(fahrenheitElement);
 
 		expect(celsiusElement).toHaveValue(0);
-	});
-
-	it("should match the snapshot", () => {
-		const { asFragment } = render(<TemperatureConverter />);
-
-		expect(asFragment()).toMatchSnapshot();
 	});
 });

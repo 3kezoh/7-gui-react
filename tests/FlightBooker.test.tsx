@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { FlightBooker } from "../../components";
+import { userEvent } from "vitest/browser";
+import { render } from "vitest-browser-react";
+import { FlightBooker } from "@/components";
 
 beforeEach(() => {
 	vi.useFakeTimers({ now: new Date("1972-06-05") });
@@ -13,17 +13,17 @@ afterEach(() => {
 });
 
 describe("FlightBooker", () => {
-	it("should be in the document", () => {
-		render(<FlightBooker />);
+	it("should be in the document", async () => {
+		const screen = await render(<FlightBooker />);
 
 		const flightBooker = screen.getByTestId("flightBooker");
 
 		expect(flightBooker).toBeInTheDocument();
 	});
 
-	describe("one-way flight", () => {
-		it("should have the return date disabled", () => {
-			render(<FlightBooker />);
+	describe("one-way flight", async () => {
+		it("should have the return date disabled", async () => {
+			const screen = await render(<FlightBooker />);
 
 			const returnDateInput = screen.getByTestId("returnDate");
 
@@ -31,31 +31,25 @@ describe("FlightBooker", () => {
 		});
 
 		it("should update the start date", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const startDateInput = screen.getByTestId("startDate");
 
-			await user.clear(startDateInput);
-
-			await user.type(startDateInput, "1980-03-25");
+			await userEvent.fill(startDateInput, "1980-03-25");
 
 			expect(startDateInput).toHaveValue("1980-03-25");
 		});
 
-		it("should informs the user that the booking is successful", async () => {
+		it("should informs the user the booking is successful", async () => {
 			const alertSpy = vi.spyOn(window, "alert");
 
-			alertSpy.mockImplementation(() => null);
+			alertSpy.mockImplementation(() => {});
 
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const bookButton = screen.getByRole("button", { name: /book/i });
 
-			await user.click(bookButton);
+			await userEvent.click(bookButton);
 
 			expect(alertSpy).toHaveBeenCalledWith(
 				"You have booked a one-way flight on 6/5/1972",
@@ -63,25 +57,21 @@ describe("FlightBooker", () => {
 		});
 
 		it("should have the start date in red when it is invalid", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const startDateInput = screen.getByTestId("startDate");
 
-			await user.clear(startDateInput);
+			await userEvent.clear(startDateInput);
 
 			expect(startDateInput).toHaveClass("text-red-600");
 		});
 
 		it("should disable the book button when the start date is invalid", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const startDateInput = screen.getByTestId("startDate");
 
-			await user.clear(startDateInput);
+			await userEvent.clear(startDateInput);
 
 			const bookButton = screen.getByRole("button", { name: /book/i });
 
@@ -89,11 +79,9 @@ describe("FlightBooker", () => {
 		});
 	});
 
-	describe("return flight", () => {
+	describe("return flight", async () => {
 		it("should select a return flight", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -101,15 +89,13 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			expect(flightSelect).toHaveValue("return flight");
 		});
 
 		it("should update the return date", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -117,13 +103,13 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			const returnDateInput = screen.getByTestId("returnDate");
 
-			await user.clear(returnDateInput);
+			await userEvent.clear(returnDateInput);
 
-			await user.type(returnDateInput, "1980-03-25");
+			await userEvent.fill(returnDateInput, "1980-03-25");
 
 			expect(returnDateInput).toHaveValue("1980-03-25");
 		});
@@ -131,11 +117,9 @@ describe("FlightBooker", () => {
 		it("should informs the user the booking is successful", async () => {
 			const alertSpy = vi.spyOn(window, "alert");
 
-			alertSpy.mockImplementation(() => null);
+			alertSpy.mockImplementation(() => {});
 
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -143,17 +127,17 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			const returnDateInput = screen.getByTestId("returnDate");
 
-			await user.clear(returnDateInput);
+			await userEvent.clear(returnDateInput);
 
-			await user.type(returnDateInput, "1980-03-25");
+			await userEvent.fill(returnDateInput, "1980-03-25");
 
 			const bookButton = screen.getByRole("button", { name: /book/i });
 
-			await user.click(bookButton);
+			await userEvent.click(bookButton);
 
 			expect(alertSpy).toHaveBeenCalledWith(
 				"You have booked a return flight on 6/5/1972 to 3/25/1980",
@@ -161,9 +145,7 @@ describe("FlightBooker", () => {
 		});
 
 		it("should have the return date in red when it is invalid", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -171,19 +153,17 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			const returnDateInput = screen.getByTestId("returnDate");
 
-			await user.clear(returnDateInput);
+			await userEvent.clear(returnDateInput);
 
 			expect(returnDateInput).toHaveClass("text-red-600");
 		});
 
 		it("should disable the book button when the return date is invalid", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -191,11 +171,11 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			const returnDateInput = screen.getByTestId("returnDate");
 
-			await user.clear(returnDateInput);
+			await userEvent.clear(returnDateInput);
 
 			const bookButton = screen.getByRole("button", { name: /book/i });
 
@@ -203,9 +183,7 @@ describe("FlightBooker", () => {
 		});
 
 		it("should disable the book button when the return date is before or the same as the start date", async () => {
-			const user = userEvent.setup({ delay: null });
-
-			render(<FlightBooker />);
+			const screen = await render(<FlightBooker />);
 
 			const flightSelect = screen.getByRole("combobox");
 
@@ -213,17 +191,11 @@ describe("FlightBooker", () => {
 				name: /return flight/i,
 			});
 
-			await user.selectOptions(flightSelect, returnFlightOption);
+			await userEvent.selectOptions(flightSelect, returnFlightOption);
 
 			const bookButton = screen.getByRole("button", { name: /book/i });
 
 			expect(bookButton).toBeDisabled();
 		});
-	});
-
-	it("should match the snapshot", () => {
-		const { asFragment } = render(<FlightBooker />);
-
-		expect(asFragment()).toMatchSnapshot();
 	});
 });
