@@ -16,8 +16,8 @@ interface User extends Identifiable {
 const initialState = {
 	id: "",
 	name: "",
-	surname: "",
 	prefix: "",
+	surname: "",
 };
 
 export function CRUD({ initialUsers = [] }: CRUDProps) {
@@ -86,8 +86,8 @@ export function CRUD({ initialUsers = [] }: CRUDProps) {
 					const isSelected = user.id === id;
 
 					const buttonClassName = cn("bg-white px-2 w-full text-left", {
-						"text-white bg-blue-500": isSelected,
 						"hover:text-white hover:bg-blue-500": !isSelected,
+						"text-white bg-blue-500": isSelected,
 					});
 
 					return (

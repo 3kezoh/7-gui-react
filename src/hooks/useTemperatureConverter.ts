@@ -82,7 +82,7 @@ export function useTemperature(params: UseTemperatureParams) {
 	 * automatically converted if possible.
 	 */
 	function setTemperature(value: string, unit: Temperature) {
-		dispatch({ type: unit, payload: value });
+		dispatch({ payload: value, type: unit });
 	}
 
 	return [state, setTemperature] as const;

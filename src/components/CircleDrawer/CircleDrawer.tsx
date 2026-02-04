@@ -85,10 +85,6 @@ export function CircleDrawer() {
 		const { bottom, width, top, left } = canvas.getBoundingClientRect();
 
 		const actions = {
-			CANVAS: () => {
-				button.hidePopover();
-				div.hidePopover();
-			},
 			BUTTON: () => {
 				if (!selectedCircle) {
 					return;
@@ -98,6 +94,10 @@ export function CircleDrawer() {
 				button.style.left = `${left + selectedCircle.x}px`;
 
 				button.showPopover();
+				div.hidePopover();
+			},
+			CANVAS: () => {
+				button.hidePopover();
 				div.hidePopover();
 			},
 			DIV: () => {

@@ -1,18 +1,28 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.5/schema.json",
-	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+	"$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+	"assist": {
+		"actions": { "source": { "organizeImports": "on", "useSortedKeys": "on" } },
+		"enabled": true
+	},
 	"files": { "ignoreUnknown": false },
 	"formatter": { "enabled": true, "indentStyle": "tab" },
+	"javascript": { "formatter": { "quoteStyle": "double" } },
 	"linter": {
 		"enabled": true,
+		"includes": ["**", "**/.storybook"],
 		"rules": {
 			"recommended": true
-		},
-		"includes": ["**", "**/.storybook"]
+		}
 	},
-	"javascript": { "formatter": { "quoteStyle": "double" } },
-	"assist": {
-		"enabled": true,
-		"actions": { "source": { "organizeImports": "on" } }
-	}
+	"overrides": [
+		{
+			"assist": {
+				"actions": {
+					"source": { "useSortedKeys": "off" }
+				}
+			},
+			"includes": ["**/package.json"]
+		}
+	],
+	"vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true }
 }

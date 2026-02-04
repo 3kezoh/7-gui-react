@@ -8,18 +8,17 @@ import type { UserConfig } from "vite";
 
 export default {
 	plugins: [react(), tailwindcss()],
-	server: {
-		port: 3000,
-	},
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "src"),
 		},
 	},
+	server: {
+		port: 3000,
+	},
 	test: {
 		browser: {
 			enabled: true,
-			provider: playwright(),
 			headless: true,
 			// https://vitest.dev/config/browser/playwright
 			instances: [
@@ -27,17 +26,18 @@ export default {
 				{ browser: "firefox" },
 				{ browser: "webkit" },
 			],
+			provider: playwright(),
+		},
+		coverage: {
+			provider: "v8",
+			reporter: ["text", "html"],
 		},
 		css: {
 			modules: {
 				classNameStrategy: "non-scoped",
 			},
 		},
-		coverage: {
-			reporter: ["text", "html"],
-			provider: "v8",
-		},
-		setupFiles: ["tests/setup.ts"],
 		globals: true,
+		setupFiles: ["tests/setup.ts"],
 	},
 } satisfies UserConfig;

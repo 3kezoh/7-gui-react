@@ -68,7 +68,7 @@ export function useHistory<T>(initialState: T) {
 	const canRedo = stash.length >= 1;
 	const canUndo = commits.length >= 2;
 
-	return [at(commits, -1), { canRedo, canUndo, undo, redo, commit }] as const;
+	return [at(commits, -1), { canRedo, canUndo, commit, redo, undo }] as const;
 }
 
 type Updater<T> = (state: T) => T;

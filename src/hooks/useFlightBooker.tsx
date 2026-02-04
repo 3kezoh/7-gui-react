@@ -58,8 +58,8 @@ export function useFlightBooker(initialState?: Partial<State>) {
 
 	const defaultState = {
 		flight: "one-way flight",
-		startDateAsString: nowAsString,
 		returnDateAsString: nowAsString,
+		startDateAsString: nowAsString,
 	} satisfies State;
 
 	const [state, dispatch] = useReducer(reducer, {
@@ -68,11 +68,11 @@ export function useFlightBooker(initialState?: Partial<State>) {
 	});
 
 	function setFlight(payload: Flight) {
-		dispatch({ type: "flight", payload });
+		dispatch({ payload, type: "flight" });
 	}
 
 	function setFlightDate(type: FlightDate, payload: string) {
-		dispatch({ type, payload });
+		dispatch({ payload, type });
 	}
 
 	return [state, { setFlight, setFlightDate }] as const;

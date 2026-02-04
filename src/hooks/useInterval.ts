@@ -19,5 +19,5 @@ export function useInterval(fn: () => void, delay: number) {
 		intervalId.current = window.setInterval(fn, delay);
 	}
 
-	return { stopInterval, resetInterval };
+	return { resetInterval, stopInterval };
 }

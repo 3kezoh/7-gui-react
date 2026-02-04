@@ -31,5 +31,5 @@ export function useCRUD<T extends Identifiable>(
 		setEntities(entities.filter(({ id }) => id !== payload));
 	}
 
-	return [entities, { create, update, remove }] as const;
+	return [entities, { create, remove, update }] as const;
 }
