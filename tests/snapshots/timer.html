@@ -1,0 +1,49 @@
+<DocumentFragment>
+  <div
+    class="grid gap-4 p-4 border border-black w-fit"
+    data-testid="timer"
+  >
+    <div
+      class="flex gap-2"
+    >
+      <label
+        for="time"
+      >
+        Elapsed Time:
+      </label>
+      <progress
+        id="time"
+        max="1000"
+        value="0"
+      />
+    </div>
+    <div>
+      0s
+    </div>
+    <div
+      class="flex gap-2"
+    >
+      <label
+        for="duration"
+      >
+        Duration:
+      </label>
+      <input
+        class="border border-black w-full max-w-xs"
+        id="duration"
+        max="10000"
+        min="0"
+        name="duration"
+        step="100"
+        type="range"
+        value="1000"
+      />
+    </div>
+    <button
+      class="border px-2 transition-colors hover:text-white hover:bg-black"
+      type="button"
+    >
+      Reset
+    </button>
+  </div>
+</DocumentFragment>

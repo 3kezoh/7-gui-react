@@ -198,4 +198,12 @@ describe("FlightBooker", () => {
 			expect(bookButton).toBeDisabled();
 		});
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await render(<FlightBooker />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot("./snapshots/flight-booker.html");
+	});
 });

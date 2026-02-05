@@ -113,4 +113,14 @@ describe("TemperatureConverter", () => {
 
 		expect(celsiusElement).toHaveValue(0);
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await render(<TemperatureConverter />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot(
+			"./snapshots/temperature-converter.html",
+		);
+	});
 });

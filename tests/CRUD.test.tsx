@@ -147,4 +147,12 @@ describe("CRUD", () => {
 
 		expect(filteredUsers).toHaveLength(1);
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await render(<CRUD />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot("./snapshots/crud.html");
+	});
 });

@@ -151,6 +151,14 @@ describe("Timer", () => {
 			expect(sliderElement).toHaveValue("1000");
 		});
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await page.render(<Timer />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot("./snapshots/timer.html");
+	});
 });
 
 async function act<T>(callback: () => T | Promise<T>): Promise<T> {

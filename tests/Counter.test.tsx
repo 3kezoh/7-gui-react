@@ -46,4 +46,12 @@ describe("Counter", () => {
 
 		expect(countElement).toBeInTheDocument();
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await render(<Counter />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot("./snapshots/counter.html");
+	});
 });

@@ -9,4 +9,12 @@ describe("CircleDrawer", () => {
 
 		expect(circleDrawer).toBeInTheDocument();
 	});
+
+	it("should match the snapshot", async () => {
+		const { asFragment } = await render(<CircleDrawer />);
+
+		const fragment = asFragment();
+
+		expect(fragment).toMatchFileSnapshot("./snapshots/circle-drawer.html");
+	});
 });

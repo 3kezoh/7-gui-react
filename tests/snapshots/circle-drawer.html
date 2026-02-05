@@ -1,0 +1,51 @@
+<DocumentFragment>
+  <div
+    class="border w-max relative"
+    data-testid="circleDrawer"
+  >
+    <fieldset
+      class="flex gap-2 p-2 mx-auto w-fit"
+    >
+      <button
+        class="border px-2 cursor-not-allowed bg-gray-200 text-gray-400 border-gray-400"
+        disabled=""
+        type="button"
+      >
+        Undo
+      </button>
+      <button
+        class="border px-2 cursor-not-allowed bg-gray-200 text-gray-400 border-gray-400"
+        disabled=""
+        type="button"
+      >
+        Redo
+      </button>
+    </fieldset>
+    <canvas
+      height="300"
+      width="300"
+    >
+      This feature is not supported by your browser
+    </canvas>
+    <button
+      class="border bg-white p-2"
+      popover="manual"
+      type="button"
+    >
+      Adjust diameter..
+    </button>
+    <div
+      class="border -translate-x-1/2 -translate-y-full p-2"
+      popover="manual"
+    >
+      Adjust diamater of circle at (, )
+      <input
+        max="100"
+        min="1"
+        step="1"
+        type="range"
+        value="10"
+      />
+    </div>
+  </div>
+</DocumentFragment>
