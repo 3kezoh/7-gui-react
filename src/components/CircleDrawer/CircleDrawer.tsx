@@ -11,7 +11,7 @@ type SelectedCircle = Circle & { isSelected: boolean };
 type Nullable<T> = T | null;
 
 export function CircleDrawer() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const svgRef = useRef<SVGSVGElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const divRef = useRef<HTMLDivElement>(null);
 	const [draft, setDraft] = useState<SelectedCircle[]>([]);
@@ -26,31 +26,6 @@ export function CircleDrawer() {
 	>([]);
 
 	useEffect(() => {
-		const [canvas] = unref(canvasRef);
-		const context = canvas.getContext("2d");
-
-		if (!context) {
-			return;
-		}
-
-		context.clearRect(0, 0, canvas.width, canvas.height);
-
-		draft.forEach((circle) => {
-			const path = getCirclePath(circle);
-
-			if (circle.isSelected) {
-				withFillStyle(context, "gray", (context) => {
-					context.fill(path);
-				});
-
-				return;
-			}
-
-			context.stroke(path);
-		});
-	}, [draft]);
-
-	useEffect(() => {
 		function onPointerDown({ target }: PointerEvent) {
 			const isNode = target instanceof Node;
 
@@ -58,17 +33,17 @@ export function CircleDrawer() {
 				return;
 			}
 
-			const [button, canvas, div] = unref(buttonRef, canvasRef, divRef);
+			const [button, svg, div] = unref(buttonRef, svgRef, divRef);
 
 			if (
 				button.contains(target) ||
-				canvas.contains(target) ||
+				svg.contains(target) ||
 				div.contains(target)
 			) {
 				return;
 			}
 
-			dispatch("FOCUS_CANVAS");
+			dispatch("FOCUS_SVG");
 		}
 
 		window.addEventListener("pointerdown", onPointerDown);
@@ -81,8 +56,8 @@ export function CircleDrawer() {
 	}, [committed]);
 
 	useLayoutEffect(() => {
-		const [button, canvas, div] = unref(buttonRef, canvasRef, divRef);
-		const { bottom, width, top, left } = canvas.getBoundingClientRect();
+		const [button, svg, div] = unref(buttonRef, svgRef, divRef);
+		const { bottom, width, top, left } = svg.getBoundingClientRect();
 
 		const actions = {
 			BUTTON: () => {
@@ -96,10 +71,6 @@ export function CircleDrawer() {
 				button.showPopover();
 				div.hidePopover();
 			},
-			CANVAS: () => {
-				button.hidePopover();
-				div.hidePopover();
-			},
 			DIV: () => {
 				div.style.top = `${bottom - 10}px`;
 				div.style.left = `${left + width / 2}px`;
@@ -108,20 +79,24 @@ export function CircleDrawer() {
 				button.hidePopover();
 				div.showPopover();
 			},
+			SVG: () => {
+				button.hidePopover();
+				div.hidePopover();
+			},
 		};
 
 		actions[focus]();
 	}, [focus, selectedCircle]);
 
-	function onClick({ target, ...event }: MouseEvent<HTMLCanvasElement>) {
-		if (focus !== "CANVAS") {
+	function onClick({ target, ...event }: MouseEvent<SVGSVGElement>) {
+		if (focus !== "SVG") {
 			setNearestCircle(event);
 
-			return dispatch("FOCUS_CANVAS");
+			return dispatch("FOCUS_SVG");
 		}
 
-		const [canvas] = unref(canvasRef);
-		const point = getCanvasPosition(canvas, event);
+		const [svg] = unref(svgRef);
+		const point = getSvgPosition(svg, event);
 
 		const nextCircles = draft.map((circle) => ({
 			...circle,
@@ -135,20 +110,20 @@ export function CircleDrawer() {
 		setIndex(-1);
 	}
 
-	function onContextMenu(event: MouseEvent<HTMLCanvasElement>) {
+	function onContextMenu(event: MouseEvent<SVGSVGElement>) {
 		event.preventDefault();
 
-		if (focus !== "CANVAS") {
+		if (focus !== "SVG") {
 			setNearestCircle(event);
 
-			return dispatch("FOCUS_CANVAS");
+			return dispatch("FOCUS_SVG");
 		}
 
 		dispatch("OPEN_CONTEXT_MENU");
 	}
 
-	function onMouseMove(event: MouseEvent<HTMLCanvasElement>) {
-		if (focus !== "CANVAS") {
+	function onMouseMove(event: MouseEvent<SVGSVGElement>) {
+		if (focus !== "SVG") {
 			return;
 		}
 
@@ -156,8 +131,8 @@ export function CircleDrawer() {
 	}
 
 	function setNearestCircle(event: Pick<MouseEvent, "clientX" | "clientY">) {
-		const [canvas] = unref(canvasRef);
-		const point = getCanvasPosition(canvas, event);
+		const [svg] = unref(svgRef);
+		const point = getSvgPosition(svg, event);
 		const nearestCircleIndex = getNearestCircleIndexFromCircles(point);
 
 		setDraft((circles) =>
@@ -208,16 +183,28 @@ export function CircleDrawer() {
 					Redo
 				</Button>
 			</fieldset>
-			<canvas
-				ref={canvasRef}
+			<svg
+				ref={svgRef}
 				width={300}
 				height={300}
 				onClick={onClick}
 				onContextMenu={onContextMenu}
 				onMouseMove={onMouseMove}
+				role="img"
 			>
-				This feature is not supported by your browser
-			</canvas>
+				{draft.map((circle, i) => (
+					<circle
+						key={i}
+						cx={circle.x}
+						cy={circle.y}
+						r={circle.radius}
+						fill={circle.isSelected ? "lightgray" : "none"}
+						stroke="black"
+						strokeWidth={1}
+						pointerEvents="visibleStroke"
+					/>
+				))}
+			</svg>
 			<button
 				type="button"
 				popover="manual"
@@ -280,35 +267,13 @@ function getNearestCircleIndexFrom(circles: Circle[]) {
 	};
 }
 
-function getCirclePath({ x, y, radius }: Circle) {
-	const path = new Path2D();
-
-	path.arc(x, y, radius, 0, 2 * Math.PI);
-
-	return path;
-}
-
-function getCanvasPosition<T extends HTMLCanvasElement>(
-	canvas: T,
+function getSvgPosition<T extends SVGSVGElement>(
+	svg: T,
 	{ clientX, clientY }: Pick<MouseEvent, "clientX" | "clientY">,
 ) {
-	const { left, top } = canvas.getBoundingClientRect();
+	const { left, top } = svg.getBoundingClientRect();
 	const x = clientX - left;
 	const y = clientY - top;
 
 	return { x, y };
-}
-
-function withFillStyle<T extends CanvasRenderingContext2D>(
-	context: T,
-	color: CanvasFillStrokeStyles["fillStyle"],
-	draw: (context: T) => void,
-) {
-	context.save();
-
-	context.fillStyle = color;
-
-	draw(context);
-
-	context.restore();
 }

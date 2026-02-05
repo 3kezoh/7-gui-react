@@ -1,30 +1,30 @@
 import { useReducer } from "react";
 
-type State = "BUTTON" | "CANVAS" | "DIV";
+type State = "BUTTON" | "DIV" | "SVG";
 
-type Action = "OPEN_CONTEXT_MENU" | "OPEN_DIAMATER_SELECT" | "FOCUS_CANVAS";
+type Action = "OPEN_CONTEXT_MENU" | "OPEN_DIAMATER_SELECT" | "FOCUS_SVG";
 
 function reducer(state: State, action: Action) {
 	const transitions: Record<State, Partial<Record<Action, State>>> = {
 		BUTTON: {
-			FOCUS_CANVAS: "CANVAS",
+			FOCUS_SVG: "SVG",
 			OPEN_DIAMATER_SELECT: "DIV",
 		},
-		CANVAS: {
-			FOCUS_CANVAS: "CANVAS",
-			OPEN_CONTEXT_MENU: "BUTTON",
-		},
 		DIV: {
-			FOCUS_CANVAS: "CANVAS",
-			OPEN_CONTEXT_MENU: "CANVAS",
+			FOCUS_SVG: "SVG",
+			OPEN_CONTEXT_MENU: "SVG",
+		},
+		SVG: {
+			FOCUS_SVG: "SVG",
+			OPEN_CONTEXT_MENU: "BUTTON",
 		},
 	};
 
-	return transitions[state][action] ?? "CANVAS";
+	return transitions[state][action] ?? "SVG";
 }
 
 export function useFocus() {
-	return useReducer(reducer, "CANVAS");
+	return useReducer(reducer, "SVG");
 }
 
 export default useFocus;
